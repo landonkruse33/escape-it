@@ -1,1 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Guessing Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Password Guessing Application</h1>
+    <p>Please enter your password:</p>
+    <input type="password" id="passwordInput" placeholder="Enter password" />
+    <button id="guessButton">Guess Password</button>
+    <div id="result"></div>
 
+    <script>
+        document.getElementById('guessButton').addEventListener('click', function() {
+            const password = document.getElementById('passwordInput').value;
+            const resultDiv = document.getElementById('result');
+
+            // Basic error handling
+            if (!password) {
+                resultDiv.textContent = "Error: Please enter a password.";
+                resultDiv.style.color = "red";
+                return;
+            }
+
+            try {
+                // Simulating a machine learning password guessing algorithm
+                const guessedPassword = guessPassword(password);
+                resultDiv.textContent = `Guessed Password: ${guessedPassword}`;
+                resultDiv.style.color = "green";
+            } catch (error) {
+                // Exception handling
+                resultDiv.textContent = `An error occurred: ${error.message}`;
+                resultDiv.style.color = "red";
+            }
+        });
+
+        function guessPassword(actualPassword) {
+            // Simulated guessing logic (for demonstration purposes)
+            const possiblePasswords = ['123456', 'password', '12345678', actualPassword];
+            const guessedPassword = possiblePasswords[Math.floor(Math.random() * possiblePasswords.length)];
+            return guessedPassword;
+        }
+    </script>
+</body>
+</html>
