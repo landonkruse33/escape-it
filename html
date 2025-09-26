@@ -3,55 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Guessing Application</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        #result {
-            margin-top: 20px;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <h1>Password Guessing Application</h1>
-    <p>Please enter your password:</p>
-    <input type="password" id="passwordInput" placeholder="Enter password" />
-    <button id="guessButton">Guess Password</button>
-    <div id="result"></div>
-
+    <title>Password Management System</title>
     <script>
-        document.getElementById('guessButton').addEventListener('click', function() {
-            const password = document.getElementById('passwordInput').value;
-            const resultDiv = document.getElementById('result');
+        // Predefined list of previous passwords
+        const previousPasswords = ["password123", "letmein", "123456", "qwerty", "abc123"];
 
-            // Basic error handling
-            if (!password) {
-                resultDiv.textContent = "Error: Please enter a password.";
-                resultDiv.style.color = "red";
-                return;
-            }
-
+        function checkPassword() {
             try {
-                // Simulating a machine learning password guessing algorithm
-                const guessedPassword = guessPassword(password);
-                resultDiv.textContent = `Guessed Password: ${guessedPassword}`;
-                resultDiv.style.color = "green";
-            } catch (error) {
-                // Exception handling
-                resultDiv.textContent = `An error occurred: ${error.message}`;
-                resultDiv.style.color = "red";
-            }
-        });
+                const userInput = document.getElementById("passwordInput").value;
+                if (!userInput) {
+                    throw new Error("Password cannot be empty.");
+                }
 
-        function guessPassword(actualPassword) {
-            // Simulated guessing logic (for demonstration purposes)
-            const possiblePasswords = ['123456', 'password', '12345678', actualPassword];
-            const guessedPassword = possiblePasswords[Math.floor(Math.random() * possiblePasswords.length)];
-            return guessedPassword;
+                // Check if the password is in the previous passwords list
+                if (previousPasswords.includes(userInput)) {
+                    alert("Password is valid.");
+                } else {
+                    alert("Password not found in previous passwords. Attempting to brute-force...");
+
+                    // Simulate brute-force attempt
+                    bruteForcePassword(userInput);
+                }
+            } catch (error) {
+                console.error("An error occurred: ", error);
+                alert(error.message);
+            }
+        }
+
+        function bruteForcePassword(targetPassword) {
+            const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            let found = false;
+
+            // Brute-force logic (simplified for demonstration)
+            for (let i = 0; i < charset.length; i++) {
+                for (let j = 0; j < charset.length; j++) {
+                    const guess = charset[i] + charset[j]; // Generate a two-character guess
+                    if (guess === targetPassword) {
+                        alert("Password found: " + guess);
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) break;
+            }
+
+            if (!found) {
+                alert("Password could not be brute-forced.");
+            }
         }
     </script>
+</head>
+<body>
+    <h1>Password Management System</h1>
+    <label for="passwordInput">Enter your password:</label>
+    <input type="text" id="passwordInput" />
+    <button onclick="checkPassword()">Submit</button>
 </body>
 </html>
